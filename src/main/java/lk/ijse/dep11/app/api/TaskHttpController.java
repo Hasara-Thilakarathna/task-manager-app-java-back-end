@@ -2,8 +2,7 @@ package lk.ijse.dep11.app.api;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/tasks")
@@ -24,5 +23,27 @@ public class TaskHttpController {
     public void destroy(){
         pool.close();
     }
+
+    @PostMapping
+    public void createTask(){
+
+    }
+
+    @PatchMapping
+    public void updateTask(){
+
+    }
+
+    @GetMapping
+    public void getAllTasks(){
+
+    }
+
+    @DeleteMapping
+    public void deleteTask(){
+
+    }
+
+
 
 }
