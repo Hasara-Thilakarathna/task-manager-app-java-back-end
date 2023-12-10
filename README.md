@@ -1,4 +1,4 @@
-# TaskVista To-Do App Back-End
+# To-Do App Back-End
 
 ## Introduction
 Welcome to the backend of the To-Do App. This Java application provides the web services required for managing tasks in a to-do list.
