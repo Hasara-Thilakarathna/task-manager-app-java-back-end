@@ -58,9 +58,29 @@ public class TaskHttpController {
        }
     }
 
-    @ResponseStatus
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping(value = "/{id}", consumes = "application/json")
-    public void updateTask(@PathVariable("id") int taskId,@RequestBody TaskTO task){
+    public void updateTask(@PathVariable("id") int taskId,@RequestBody @Validated(TaskTO.Update.class) TaskTO task){
+       try(Connection connection = pool.getConnection()) {
+           PreparedStatement stmExist = connection
+                   .prepareStatement("SELECT * FROM task WHERE id = ?");
+           stmExist.setInt(1,taskId);
+           System.out.println("Okay");
+           if(!stmExist.executeQuery().next()){
+               throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Task not found");
+           }
+
+           PreparedStatement stm = connection
+                   .prepareStatement("UPDATE task SET description = ?, status = ?,email = ? WHERE id = ?");
+           stm.setString(1,task.getDescription());
+           stm.setBoolean(2,task.getStatus());
+           stm.setString(3,task.getEmail());
+           stm.setInt(4,taskId);
+           stm.executeUpdate();
+
+       } catch (SQLException e) {
+           throw new RuntimeException(e);
+       }
 
     }
 
