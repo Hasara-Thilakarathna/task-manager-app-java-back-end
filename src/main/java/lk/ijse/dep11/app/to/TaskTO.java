@@ -15,11 +15,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class TaskTO implements Serializable {
     @Null(message = "Id should be empty")
-    private int id;
+    private Integer id;
     @NotBlank(message = "Description should not be empty")
     private String description;
     @Null(message = "Status should be empty")
-    private String status;
+    private Boolean status;
     @Email
     @NotEmpty(message = "Email should not be empty")
     private String email;
