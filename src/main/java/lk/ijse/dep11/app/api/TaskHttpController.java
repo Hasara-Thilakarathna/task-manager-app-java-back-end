@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lk.ijse.dep11.app.to.TaskTO;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.config.Task;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -57,8 +58,9 @@ public class TaskHttpController {
        }
     }
 
-    @PatchMapping("/{id}")
-    public void updateTask(){
+    @ResponseStatus
+    @PatchMapping(value = "/{id}", consumes = "application/json")
+    public void updateTask(@PathVariable("id") int taskId,@RequestBody TaskTO task){
 
     }
 
