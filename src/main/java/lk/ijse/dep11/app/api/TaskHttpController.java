@@ -10,6 +10,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.PreDestroy;
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/tasks")
@@ -60,9 +62,24 @@ public class TaskHttpController {
 
     }
 
-    @GetMapping
-    public void getAllTasks(){
-        System.out.println("getAllTasks");
+    @GetMapping(produces = "application/json")
+    public List<TaskTO> getAllTasks(){
+        try(Connection connection = pool.getConnection()) {
+            Statement stm = connection.createStatement();
+            ResultSet rst = stm.executeQuery("SELECT * FROM task ORDER BY id");
+            List<TaskTO> taskList = new LinkedList<>();
+            while (rst.next()){
+                int id = rst.getInt("id");
+                String description = rst.getString("description");
+                boolean status = rst.getBoolean("status");
+                String email = rst.getString("email");
+                taskList.add(new TaskTO(id,description,status,email));
+            }
+            return taskList;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -81,12 +98,10 @@ public class TaskHttpController {
                     .prepareStatement("DELETE FROM task WHERE id = ?");
             stmDelete.setInt(1,taskId);
             stmDelete.executeUpdate();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
-
-
 
 }
